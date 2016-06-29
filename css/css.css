@@ -81,6 +81,10 @@ footer table tr td:nth-child(2)  {
 	text-align: right !important;
 }
 
+.row {
+	border: 1px solid yellow;
+}
+
 /*#####SignInUp#####*/
 
 .signin h1,
