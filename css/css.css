@@ -1,0 +1,180 @@
+body {
+	font-family: 'Ubuntu Mono', 'Open Sans', sans-serif;
+}
+
+/*=====Navbar=====*/
+
+.navbar-default .navbar-nav > li > a {
+	text-transform: capitalize;
+}
+
+.navbar-default .navbar-nav > li:hover > a {
+	background: #E7E7E7;
+}
+
+
+
+.navbar {
+	margin-bottom: 0;
+}
+
+/*=====Chart=====*/
+
+.chart {
+	background: #EEEEEE;
+	margin-bottom: 50px;
+}
+
+.top-chart {
+	min-height: 250px;
+	background: #EEEEEE;
+	padding-top: 100px;
+}
+
+.top-chart button span {
+	position: relative;
+	top: 3px;
+	left: 1px;
+}
+
+/*=====Content=====*/
+
+.example {
+	border: 1px solid #C3C1C6;
+	border-radius: 5px;
+	padding: 10px 15px;
+	min-height: 300px;
+	position: relative;
+	width: 49%;
+}
+
+.example-right {
+		margin-left: 2%;
+}
+
+.example .glyphicon-pencil,
+.example .glyphicon-remove {
+	float: right;
+	margin-left: 10px;
+	color: #99999A;
+}
+
+.example .glyphicon-pencil:hover,
+.example .glyphicon-remove:hover {
+	color: #6E6E6F;
+}
+
+.example footer {
+	width: 95%;
+	border-top: 1px solid #DCDCDC;
+	/*Any ways to put it in bottom?*/
+	position: absolute;
+	bottom: 0;
+	padding: 10px 0;
+}
+
+footer table {
+	width: 100%;
+}
+
+footer table tr td:nth-child(2)  {
+	text-align: right !important;
+}
+
+/*#####SignInUp#####*/
+
+.signin h1,
+.signup h1 {
+	margin-bottom: 25px;
+	margin-left: 17%;
+}
+
+.chart-sign {
+	height: 75px;
+}
+
+.md-page {
+	width: 50%;
+	margin: auto;
+}
+
+/*first name in line?*/
+
+/*.form-horizontal .form-group:last-child {
+	margin-bottom: 50px;
+}*/ 
+/*Why doesn't it work?*/
+
+.signin .gap,
+.signup .gap {
+	margin-bottom: 40px;
+}
+
+.form-group .btn-default {
+	background: #5BBC5B;
+	font-weight: bold;
+	color: #fff;
+}
+
+#sign-in,
+#sign-up {
+	padding-top: 20px;
+}
+
+
+/*=====Form=====*/
+
+.form-container {
+	border: 1px solid yellow;
+	width: 70%;
+	margin: 0 auto;
+}
+
+.form-line {
+	height: 20px;
+	margin-bottom: 10px;
+}
+
+.form-line span {
+	line-height: 20px;
+}
+
+.form-line input {
+	/*float: right;*/
+	width: 90%;
+}
+
+
+/*=====Media=====*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+	.example-right {
+			margin-left: 0;
+		}
+
+	.example {
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+
+	.reg-form {
+		margin-bottom: 100px;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
