@@ -45,7 +45,6 @@ body {
 	padding: 10px 15px;
 	min-height: 300px;
 	position: relative;
-	width: 49%;
 }
 
 .example-right {
@@ -81,9 +80,6 @@ footer table tr td:nth-child(2)  {
 	text-align: right !important;
 }
 
-.row {
-	border: 1px solid yellow;
-}
 
 /*#####SignInUp#####*/
 
@@ -101,13 +97,6 @@ footer table tr td:nth-child(2)  {
 	width: 50%;
 	margin: auto;
 }
-
-/*first name in line?*/
-
-/*.form-horizontal .form-group:last-child {
-	margin-bottom: 50px;
-}*/ 
-/*Why doesn't it work?*/
 
 .signin .gap,
 .signup .gap {
@@ -162,7 +151,7 @@ footer table tr td:nth-child(2)  {
 			margin-left: 0;
 		}
 
-	.example {
+	.article {
 		width: 100%;
 		margin-bottom: 20px;
 	}
