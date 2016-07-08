@@ -1,7 +1,15 @@
 var SEQUENCE_KEY = 'article_sequence';
 var ARTICLES_KEY = 'articles';
-var articlesInRow = 2;
 
+function getNumbersOfArticlesInRow(num) {
+	if (num) {
+		console.log(num);
+		return num;
+	} else {
+		num = 2;
+	}
+	return num;
+}
 
 function normalizeLocalStorageValue(key, type, defaultValue) {
 	var item = JSON.parse(localStorage.getItem(key));
@@ -43,10 +51,13 @@ function createHtmlArticleElement(article) {
 	function getHeader() {
 		var removeSpan = createElement('span');
 		removeSpan.setAttribute('aria-hidden', 'true');
+		removeSpan.setAttribute('onclick', 'deleteArticle(' + article.id + ')');
 		removeSpan.className = 'glyphicon glyphicon-remove';
 
 		var pencilSpan = createElement('span');
 		pencilSpan.setAttribute('aria-hidden', 'true');
+		// pencilSpan.setAttribute('onclick', 'editArticle(' + article.id + ')');
+		pencilSpan.setAttribute('data-target', '#editArticle');
 		pencilSpan.className = 'glyphicon glyphicon-pencil';
 
 		var articleControls = createElement('div');
@@ -141,7 +152,7 @@ function getRow() {
 	var row = articleContainer.lastElementChild;
 	var newRowNeeded = false;
 	if (row) {
-		newRowNeeded = row.childElementCount >= articlesInRow; //Возвращает количство дочерних элементов
+		newRowNeeded = row.childElementCount >= getNumbersOfArticlesInRow(); //Возвращает количство дочерних элементов
 	} else {
 		newRowNeeded = true;
 	}
@@ -156,7 +167,7 @@ function getRow() {
 function renderArticle(article) {
 	var articleHtml = createHtmlArticleElement(article);
 	var colHtml = document.createElement('div');
-	colHtml.className = 'col-md-' + (12 / articlesInRow);
+	colHtml.className = 'col-md-' + (12 / getNumbersOfArticlesInRow());
 	colHtml.appendChild(articleHtml);
 	var row = getRow();
 	row.appendChild(colHtml);
@@ -174,4 +185,37 @@ function renderArticles() {
 function clearModalFields() {
 	document.getElementById('articleTitle').value = '';
 	document.getElementById('articleContent').value = '';
+}
+
+
+// function editArticle(id) {
+// 	var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+// 	var title = articles[id].title;
+// 	var content = articles[id].content;
+// }
+
+function deleteArticle(id) {
+	var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+	delete articles[id];
+	localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
+	articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+	window.location.reload();
+}
+
+function clearArticlesStorage() {
+	// localStorage.clear(ARTICLES_KEY);
+	// localStorage.clear(SEQUENCE_KEY);
+	var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+	var id = JSON.parse(localStorage.getItem(SEQUENCE_KEY));
+	id = 1;
+	localStorage.setItem(SEQUENCE_KEY, id);
+	for (var key in articles) {
+		delete articles[key];
+	}
+	localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
+	// for (var i = 0; i < articles.length; i++) {
+	// 	delete articles[i];
+	// }
+	console.log(articles);
+	window.location.reload();
 }
