@@ -1,24 +1,26 @@
 var SEQUENCE_KEY = 'article_sequence';
 var ARTICLES_KEY = 'articles';
 
-function getNumbersOfArticlesInRow(num) {
-	if (num) {
-		console.log(num);
-		return num;
-	} else {
-		num = 2;
-	}
-	return num;
+var articlesInRow = 2;
+var articleIdPrefix = 'art-';
+var editMode = false;
+var user;
+
+function setArticlesInRow(count) {
+	articlesInRow = count;
+	renderArticles();
 }
 
 function normalizeLocalStorageValue(key, type, defaultValue) {
 	var item = JSON.parse(localStorage.getItem(key));
-	if (typeof item !== type) {
+	if (!item || typeof item !== type) {
 		localStorage.setItem(key, JSON.stringify(defaultValue));
 	}
 }
 normalizeLocalStorageValue(SEQUENCE_KEY, 'number', 1);
 normalizeLocalStorageValue(ARTICLES_KEY, 'object', {});
+//... !!!! normalizeLocalStorageValue * 2
+
 
 var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
 
@@ -44,6 +46,7 @@ function createHtmlArticleElement(article) {
 
 	var articleHtml = createElement('article');
 	articleHtml.className = 'article';
+	articleHtml.setAttribute('id', articleIdPrefix + article.id);
 	articleHtml.appendChild(getHeader());
 	articleHtml.appendChild(getMain());
 	articleHtml.appendChild(getFooter());
@@ -56,8 +59,9 @@ function createHtmlArticleElement(article) {
 
 		var pencilSpan = createElement('span');
 		pencilSpan.setAttribute('aria-hidden', 'true');
-		// pencilSpan.setAttribute('onclick', 'editArticle(' + article.id + ')');
-		pencilSpan.setAttribute('data-target', '#editArticle');
+		pencilSpan.setAttribute('onclick', 'editArticle(' + article.id + ')');
+		pencilSpan.setAttribute('data-toggle', 'modal');
+		pencilSpan.setAttribute('data-target', '#modal');
 		pencilSpan.className = 'glyphicon glyphicon-pencil';
 
 		var articleControls = createElement('div');
@@ -152,7 +156,7 @@ function getRow() {
 	var row = articleContainer.lastElementChild;
 	var newRowNeeded = false;
 	if (row) {
-		newRowNeeded = row.childElementCount >= getNumbersOfArticlesInRow(); //Возвращает количство дочерних элементов
+		newRowNeeded = row.childElementCount >= articlesInRow; //Возвращает количство дочерних элементов
 	} else {
 		newRowNeeded = true;
 	}
@@ -164,18 +168,22 @@ function getRow() {
 	return row;
 }
 
+function clearArticles() {
+	var articleContainer = document.getElementById('articleContainer');
+	articleContainer.innerHTML = '';
+}
+
 function renderArticle(article) {
 	var articleHtml = createHtmlArticleElement(article);
 	var colHtml = document.createElement('div');
-	colHtml.className = 'col-md-' + (12 / getNumbersOfArticlesInRow());
+	colHtml.className = 'col-md-' + (12 / articlesInRow);
 	colHtml.appendChild(articleHtml);
 	var row = getRow();
 	row.appendChild(colHtml);
 }
 
 function renderArticles() {
-	var articleContainer = document.getElementById('articleContainer');
-	articleContainer.innerHTML = '';
+	clearArticles();
 	for (var id in articles) {
 		if (!articles.hasOwnProperty(id)) continue;
 		renderArticle(articles[id]);
@@ -185,37 +193,39 @@ function renderArticles() {
 function clearModalFields() {
 	document.getElementById('articleTitle').value = '';
 	document.getElementById('articleContent').value = '';
+	document.getElementById('articleId').value = '';
 }
 
+function updateArticle() {
+	var id = document.getElementById('articleId').value;
+	articles[id].title = document.getElementById('articleTitle').value;
+	articles[id].content = document.getElementById('articleContent').value;
+	localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
+	var refArticle = document.getElementById(articleIdPrefix + id);
+	var newArticle = createHtmlArticleElement(articles[id]);
+	refArticle.parentNode.replaceChild(newArticle, refArticle);
+	editMode = false;
+	clearModalFields();
+}
 
-// function editArticle(id) {
-// 	var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
-// 	var title = articles[id].title;
-// 	var content = articles[id].content;
-// }
+function editArticle(id) {
+	editMode = true;
+	document.getElementById('articleId').value = id;
+	document.getElementById('articleTitle').value = articles[id].title;
+	document.getElementById('articleContent').value = articles[id].content;
+}
 
 function deleteArticle(id) {
-	var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+	articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
 	delete articles[id];
 	localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
-	articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
-	window.location.reload();
+	renderArticles();
 }
 
 function clearArticlesStorage() {
-	// localStorage.clear(ARTICLES_KEY);
-	// localStorage.clear(SEQUENCE_KEY);
-	var articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
-	var id = JSON.parse(localStorage.getItem(SEQUENCE_KEY));
-	id = 1;
-	localStorage.setItem(SEQUENCE_KEY, id);
-	for (var key in articles) {
-		delete articles[key];
-	}
-	localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
-	// for (var i = 0; i < articles.length; i++) {
-	// 	delete articles[i];
-	// }
-	console.log(articles);
-	window.location.reload();
+	localStorage.clear();
+	articles = {};
+	renderArticles();
+	normalizeLocalStorageValue(SEQUENCE_KEY, 'number', 1);
+	normalizeLocalStorageValue(ARTICLES_KEY, 'object', {});
 }
