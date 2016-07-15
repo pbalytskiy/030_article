@@ -40,98 +40,47 @@ function createSaveAndShowArticle() {
 }
 
 function createHtmlArticleElement(article) {
-	var creationDateLabel = 'Создано: ';
-	var authorLabel = 'Автор: ';
-	var viewDetailsBtnText = 'View details >>';
+	// var creationDateLabel = 'Создано: ';
+	// var authorLabel = 'Автор: ';
+	// var viewDetailsBtnText = 'View details >>';
 
-	var articleHtml = createElement('article');
-	articleHtml.className = 'article';
-	articleHtml.setAttribute('id', articleIdPrefix + article.id);
-	articleHtml.appendChild(getHeader());
-	articleHtml.appendChild(getMain());
-	articleHtml.appendChild(getFooter());
+	var articleTmpl = '\
+    <article class="article" id="<%= prefix %><%= id %>">\
+        <header>\
+             <span>Создано:</span>\
+             <time datetime="2016-04-10"></time>\
+             <div class="article-controls">\
+                <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="<%= id %>"></span>\
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="<%= id %> data-toggle="modal" data-target="#modal"></span>\
+             </div>\
+        </header>\
+        <main>\
+            <h2><%= title %></h2>\
+            <p><%= content %></p>\
+        </main>\
+        <footer>\
+            <table class="article-footer">\
+                <tr>\
+                    <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Автор:</td>\
+                    <td rowspan="2"><button class="btn btn-default" type="button">View details >></button></td>\
+                </tr>\
+                <tr>\
+                    <td>Pavel Balytskiy</td>\
+                </tr>\
+            </table>\
+        </footer>\
+    </article>\
+';
+	var compiledArticle = _.template(articleTmpl);
 
-	function getHeader() {
-		var removeSpan = createElement('span');
-		removeSpan.setAttribute('aria-hidden', 'true');
-		removeSpan.setAttribute('onclick', 'deleteArticle(' + article.id + ')');
-		removeSpan.className = 'glyphicon glyphicon-remove';
+	var data = {
+		id: article.id,
+		title: article.title,
+		content: article.content,
+		prefix: articleIdPrefix
+	};
 
-		var pencilSpan = createElement('span');
-		pencilSpan.setAttribute('aria-hidden', 'true');
-		pencilSpan.setAttribute('onclick', 'editArticle(' + article.id + ')');
-		pencilSpan.setAttribute('data-toggle', 'modal');
-		pencilSpan.setAttribute('data-target', '#modal');
-		pencilSpan.className = 'glyphicon glyphicon-pencil';
-
-		var articleControls = createElement('div');
-		articleControls.className = 'article-controls';
-		articleControls.appendChild(createElement('a').appendChild(removeSpan));
-		articleControls.appendChild(createElement('a').appendChild(pencilSpan));
-
-		var creationLabel = createElement('span');
-		creationLabel.innerHTML = creationDateLabel;
-
-		var time = createElement('time');
-		time.innerHTML = article.creationDate;
-
-		var header = createElement('header');
-		header.appendChild(creationLabel);
-		header.appendChild(time);
-		header.appendChild(articleControls);
-		return header;
-	}
-
-	function getMain() {
-		var h2 = createElement('h2');
-		h2.innerHTML = article.title;
-
-		var p = createElement('p');
-		p.innerHTML = article.content;
-
-		var main = createElement('main');
-		main.appendChild(h2);
-		main.appendChild(p);
-		return main;
-	}
-
-	function getFooter() {
-		var authorSpan = createElement('span');
-		authorSpan.className = 'glyphicon glyphicon-user';
-		authorSpan.setAttribute('aria-hidden', 'true');
-
-		var tdAuthorHtml = createElement('td');
-		tdAuthorHtml.innerHTML = authorLabel;
-		tdAuthorHtml.appendChild(authorSpan);
-
-		var buttonHtml = createElement('button');
-		buttonHtml.className = 'btn btn-default';
-		buttonHtml.setAttribute('type', 'button');
-		buttonHtml.innerHTML = viewDetailsBtnText;
-
-		var tdButtonHtml = createElement('td');
-		tdButtonHtml.setAttribute('rowspan', '2');
-		tdButtonHtml.appendChild(buttonHtml);
-
-		var trUp = createElement('tr');
-		trUp.appendChild(tdAuthorHtml);
-		trUp.appendChild(tdButtonHtml);
-
-		var	tdSignature = createElement('td');
-		tdSignature.innerHTML = article.author;
-
-		var trSignature = createElement('tr');
-		trSignature.appendChild(tdSignature);
-
-		var table = createElement('table');
-		table.className = 'article-footer';
-		table.appendChild(trUp);
-		table.appendChild(trSignature);
-
-		var footer = createElement('footer');
-		footer.appendChild(table);
-		return footer;
-	}
+	var articleHtml = compiledArticle(data);
 	console.log(articleHtml);
 	return articleHtml;
 
