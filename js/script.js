@@ -132,8 +132,9 @@ function createHtmlArticleElement(article) {
 		footer.appendChild(table);
 		return footer;
 	}
-
+	console.log(articleHtml);
 	return articleHtml;
+
 }
 
 function saveArticle(article) {
