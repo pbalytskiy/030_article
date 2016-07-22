@@ -1,11 +1,11 @@
 var article = '\
-    <article class="article" id="<%= prefix %><%= id %>">\
+    <article class="article" id="art-<%= id %>">\
         <header>\
              <span>Создано:</span>\
              <time datetime="2016-04-10"></time>\
              <div class="article-controls">\
                 <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="<%= id %>"></span>\
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="<%= id %> data-toggle="modal" data-target="#modal"></span>\
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="<%= id %>" data-toggle="modal" data-target="#modal"></span>\
              </div>\
         </header>\
         <main>\

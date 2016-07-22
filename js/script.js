@@ -2,23 +2,16 @@ var SEQUENCE_KEY = 'article_sequence';
 var ARTICLES_KEY = 'articles';
 
 var articlesInRow = 2;
-var articleIdPrefix = 'art-';
 var editMode = false;
-var user;
+// var user {};
 
 function setArticlesInRow(count) {
 	articlesInRow = count;
 	renderArticles();
 }
 
-function normalizeLocalStorageValue(key, type, defaultValue) {
-	var item = JSON.parse(localStorage.getItem(key));
-	if (!item || typeof item !== type) {
-		localStorage.setItem(key, JSON.stringify(defaultValue));
-	}
-}
-normalizeLocalStorageValue(SEQUENCE_KEY, 'number', 1);
-normalizeLocalStorageValue(ARTICLES_KEY, 'object', {});
+normalizeLocalStorageGeneral(SEQUENCE_KEY, 'number', 1);
+normalizeLocalStorageGeneral(ARTICLES_KEY, 'object', {});
 //... !!!! normalizeLocalStorageValue * 2
 
 
@@ -39,51 +32,18 @@ function createSaveAndShowArticle() {
 	clearModalFields();
 }
 
-function createHtmlArticleElement(article) {
-	// var creationDateLabel = 'Создано: ';
-	// var authorLabel = 'Автор: ';
-	// var viewDetailsBtnText = 'View details >>';
-
-	var articleTmpl = '\
-    <article class="article" id="<%= prefix %><%= id %>">\
-        <header>\
-             <span>Создано:</span>\
-             <time datetime="2016-04-10"></time>\
-             <div class="article-controls">\
-                <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="<%= id %>"></span>\
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="<%= id %> data-toggle="modal" data-target="#modal"></span>\
-             </div>\
-        </header>\
-        <main>\
-            <h2><%= title %></h2>\
-            <p><%= content %></p>\
-        </main>\
-        <footer>\
-            <table class="article-footer">\
-                <tr>\
-                    <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Автор:</td>\
-                    <td rowspan="2"><button class="btn btn-default" type="button">View details >></button></td>\
-                </tr>\
-                <tr>\
-                    <td>Pavel Balytskiy</td>\
-                </tr>\
-            </table>\
-        </footer>\
-    </article>\
-';
-	var compiledArticle = _.template(articleTmpl);
-
+function createArticleHtml(article) {
+	// var articleTmpl = document.getElementById('articleTemplate').innerHTML;
+	// console.log(articleTmpl);
+	// var compiledArticle = _.template(articleTmpl);
 	var data = {
 		id: article.id,
 		title: article.title,
 		content: article.content,
-		prefix: articleIdPrefix
+		creationDate: '10.10.1010'
 	};
-
-	var articleHtml = compiledArticle(data);
-	console.log(articleHtml);
-	return articleHtml;
-
+	return renderTemplate(article, data);
+	// return compiledArticle(data);
 }
 
 function saveArticle(article) {
@@ -124,10 +84,9 @@ function clearArticles() {
 }
 
 function renderArticle(article) {
-	var articleHtml = createHtmlArticleElement(article);
 	var colHtml = document.createElement('div');
 	colHtml.className = 'col-md-' + (12 / articlesInRow);
-	colHtml.appendChild(articleHtml);
+	colHtml.innerHTML = createArticleHtml(article);
 	var row = getRow();
 	row.appendChild(colHtml);
 }
@@ -152,7 +111,7 @@ function updateArticle() {
 	articles[id].content = document.getElementById('articleContent').value;
 	localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
 	var refArticle = document.getElementById(articleIdPrefix + id);
-	var newArticle = createHtmlArticleElement(articles[id]);
+	var newArticle = createArticleHtml(articles[id]);
 	refArticle.parentNode.replaceChild(newArticle, refArticle);
 	editMode = false;
 	clearModalFields();

@@ -39,8 +39,8 @@
 		    	    <li><a href="contacts.html">contacts</a></li>	    	    
 		    	  </ul>
 		    	  <ul class="nav navbar-nav navbar-right">
-					  <li><a href="signin.html">Sign In</a></li>
-					  <li><a href="signup.html">Sign Up</a></li>
+					  <li><a href="signIn.html">Sign In</a></li>
+					  <li class="active"><a href="signUp.html">Sign Up</a></li>
 		    	  </ul>
 		    	</div><!-- /.navbar-collapse -->
 		    </div>
@@ -52,58 +52,84 @@
 
 	<section class="signup">
 		<div class="container">
-			<div class="md-page">
-		  		<h1>Sign Up</h1>
-		  		<form class="form-horizontal">
-		  			<div class="form-group">
-					    <label for="exampleInputName2" class="col-sm-2 control-label">First Name</label>
-					    <div class="col-sm-10">
-					      	<input type="text" class="form-control" id="exampleInputName2" placeholder="E.g. Ashwin">
-				    	</div>
-				    </div>
-				    <div class="form-group">
-					    <label for="exampleInputName2" class="col-sm-2 control-label">Last Name</label>
-					    <div class="col-sm-10">
-					      	<input type="text" class="form-control" id="exampleInputName2" placeholder="E.g. Hedge">
-					    </div>
-				  	</div>
-					<div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-					    <div class="col-sm-10">
-					      	<input type="email" class="form-control" id="inputEmail3" placeholder="E.g. aswinh@cybage.com">
-					    </div>
-					 </div>
-					 <div class="form-group">
-					    <label for="exampleInputName2" class="col-sm-2 control-label">Username</label>
-					    <div class="col-sm-10">
-					      	<input type="text" class="form-control" id="exampleInputName2" placeholder="E.g. ashwinhegde">
-					    </div>
-				  	</div>
-				  	<div class="form-group gap">
-				    	<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-				    	<div class="col-sm-10">
-				      		<input type="password" class="form-control" id="inputPassword3" placeholder="Min. 8 Characters">
-				    	</div>
-				  	</div>
-				  	<div class="form-group">
-				    	<div class="col-sm-offset-2 col-sm-10">
-				      		<button type="submit" class="btn btn-default">Sign in</button>
-				      		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sign-up" aria-expanded="false" aria-controls="sign-up">Help</button>
-				      		<div class="collapse" id="sign-up">
-									<div class="well">
-									<p>заповни форму, недоумку</p>    
-									</div>
-							</div>
-				    	</div>
-				  	</div>
-				</form>
+			<div id="sign-up-form-container" class="md-page">
+
 			</div>
 		</div>
 	</section>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+	<!-- Templates -->
+	<script id="sign-up-form-template" type="text/template">
+		<h1>Sign Up</h1>
+		<form name="signUpForm" class="form-horizontal">
+			<div class="form-group <%= firstName.error ? 'has-error' : '' %>">
+				<label for="first-name" class="col-sm-2 control-label">First Name</label>
+				<div class="col-sm-10">
+					<input id="first-name" name="firstName" type="text" class="form-control"
+						   placeholder="E.g. Ashwin" value="<%- firstName.value %>">
+					<span class="help-block">
+						<%- firstName.error ? 'This field is required' : '' %>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="last-name" class="col-sm-2 control-label">Last Name</label>
+				<div class="col-sm-10">
+					<input id="last-name" name="lastName" type="text" class="form-control"
+						   placeholder="E.g. Hedge" value="">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="email" class="col-sm-2 control-label">Email</label>
+				<div class="col-sm-10">
+					<input id="email" name="email" type="email" class="form-control"
+						   placeholder="E.g. aswinh@cybage.com" value="">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="username" class="col-sm-2 control-label">Username</label>
+				<div class="col-sm-10">
+					<input id="username" name="username" type="text" class="form-control"
+						   placeholder="E.g. ashwinhegde" value="">
+				</div>
+			</div>
+			<div class="form-group gap">
+				<label for="password" class="col-sm-2 control-label">Password</label>
+				<div class="col-sm-10">
+					<input id="password" name="password" type="password" class="form-control"
+						   placeholder="Min. 8 Characters" value="">
+				</div>
+			</div>
+			<div class="form-group gap">
+				<label for="confirm-password" class="col-sm-2 control-label">Password</label>
+				<div class="col-sm-10">
+					<input id="confirm-password" name="confirmPassword" type="password" class="form-control"
+						   placeholder="Min. 8 Characters" value="">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-default" onclick="submitSignUpForm()">Sign in</button>
+				</div>
+			</div>
+		</form>
+		<div class="alert alert-danger" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			Test
+		</div>
+	</script>
+
+	<!-- Common LIBS -->
+	<script type="text/javascript" src="js/templateService.js"></script>
+	<script type="text/javascript" src="js/normalizeLocalStorageService.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<!-- END Common LIBS -->
+
+	<script type="text/javascript" src="js/signUp.js"></script>
 </body>
 </html>
