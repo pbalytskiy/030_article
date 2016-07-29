@@ -2,7 +2,6 @@ var signUpFormData = {
     firstName: {value: '', error: false},
     lastName: {value: '', error: false},
     email: {value: '', error: false},
-    username: {value: '', error: false},
     password: {value: '', error: false},
     confirmPassword: {value: '', error: false},
     errorMessages: []
@@ -11,24 +10,19 @@ var signUpFormData = {
 var signUpFormContainer = document.getElementById('sign-up-form-container');
 signUpFormContainer.innerHTML = renderTemplate('sign-up-form-template', signUpFormData);
 
-var USER_SEQUENCE_KEY = 'user_sequence';
-var USERS_KEY = 'users';
-
-function submitSignUpForm() {
+function signUp() {
     var form = signUpFormData;
     var hasError = false;
-    normalizeLocalStorageGeneral(USER_SEQUENCE_KEY, 'number', 1);
-    normalizeLocalStorageGeneral(USERS_KEY, 'object', {});
 
     form.firstName.value = document.getElementById('first-name').value;
     form.lastName.value = document.getElementById('last-name').value;
     form.email.value = document.getElementById('email').value;
-    form.username.value = document.getElementById('username').value;
     form.password.value = document.getElementById('password').value;
     form.confirmPassword.value = document.getElementById('confirm-password').value;
 
     // ...
     for (var fieldName in form) {
+        if (fieldName === 'errorMessages') continue;
         if (!form.hasOwnProperty(fieldName)) continue;
         var field = form[fieldName];
         if (!field.value) {
@@ -64,6 +58,6 @@ function submitSignUpForm() {
 
     users[user.login] = user;
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
-    signUpFormContainer.innerHTML = 'OK!!!';
-
+    localStorage.setItem(LOGGED_IN_USER, JSON.stringify(user.login));
+    window.location = 'index.html';
 }

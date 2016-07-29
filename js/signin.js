@@ -1,51 +1,35 @@
 var signInFormData = {
-    email: {value: '', error: ''},
-    password: {value: '', error: ''},
+    email: {value: ''},
+    password: {value: ''},
     errors: []
 };
 
 var signInFormContainer = document.getElementById('sign-in-form-container');
 signInFormContainer.innerHTML = renderTemplate('sign-in-form-template', signInFormData);
 
-function logInCheckEmailAndPassword() {
+function signIn() {
+    // event.preventDefault();
     var email = document.getElementById('email').value;
     signInFormData.email.value = email;
     var password = document.getElementById('password').value;
     signInFormData.password.value = password;
+
     var users = JSON.parse(localStorage.getItem(USERS_KEY));
 
-    if (!password) {
-        signInFormData.password.error = 'Type a password!';
-    }
+    var user = users[email];
 
-    function checkEmail() {
-        for (email in users) {
-            if (!users.hasOwnProperty(email)) continue;
-            var field = users[email];
-            if (field.value = email) {
-                return true;
-            } else {
-                signInFormData.email.error = 'Wrong email!';
-            }
-        }
-    }
-
-    function checkPassword() {
-        for (password in users) {
-            if (!users.hasOwnProperty(password)) continue;
-            var field = users[password];
-            if (field.value = email) {
-                return true;
-            } else {
-                signInFormData.password.error = 'Wrong password!'
-            }
-        }
-    }
-
-    if (checkEmail() && checkPassword()) {
-        window.location.replace('index.html');
-    } else {
+    if (!user) {
+        signInFormData.errors = 'Wrong';
         signInFormContainer.innerHTML = renderTemplate('sign-in-form-template', signInFormData);
+        return
     }
-}
 
+    if (user.password !== password) {
+        signInFormData.errors = 'Wrong';
+        signInFormContainer.innerHTML = renderTemplate('sign-in-form-template', signInFormData);
+        return
+    }
+
+    localStorage.setItem(LOGGED_IN_USER, JSON.stringify(email));
+    window.location.replace('index.html');
+}

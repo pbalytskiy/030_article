@@ -35,10 +35,14 @@ body {
 }
 
 /*===== Article =====*/
+#articleContainer .row {
+	margin-bottom: 30px;
+}
+
 .article {
 	border: 1px solid #C3C1C6;
 	border-radius: 5px;
-	padding: 10px 15px;
+	padding: 10px;
 	position: relative;
 }
 
@@ -62,6 +66,8 @@ body {
 }
 
 .article footer {
+	padding-top: 10px;
+	border-top: 1px solid #eee;
 	height: 50px;
 }
 
@@ -100,11 +106,6 @@ body {
 	background: #5BBC5B;
 	font-weight: bold;
 	color: #fff;
-}
-
-#sign-in,
-#sign-up {
-	padding-top: 20px;
 }
 
 /*=====Form=====*/

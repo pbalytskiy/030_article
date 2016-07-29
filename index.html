@@ -39,8 +39,8 @@
 		    	    <li><a href="contacts.html">contacts</a></li>	    	    
 		    	  </ul>
 		    	  <ul class="nav navbar-nav navbar-right">
-		    	    <li><a href="signIn.html">Sign In</a></li>
-		    	    <li><a href="signUp.html">Sign Up</a></li>
+		    	    <li id="sign-in-nav-bar"><a href="signIn.html">Sign In</a></li>
+		    	    <li id="sign-up-nav-bar"><a href="signUp.html">Sign Up</a></li>
 		    	  </ul>
 		    	</div><!-- /.navbar-collapse -->
 		    </div>
@@ -52,9 +52,11 @@
 		<div class="container">
 			<h1>Articles</h1>
 			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal">Add an article >></button>
-			<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-th" aria-hidden="true" onclick="setArticlesInRow(3)"></span></button>
-			<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-th-large" aria-hidden="true" onclick="setArticlesInRow(2)"></span></button>
-			<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-remove" aria-hidden="true" onclick="clearArticlesStorage()" title="delete articles"></span></button>
+			<div class="pull-right">
+				<button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-th" aria-hidden="true" onclick="setArticlesInRow(3)"></span></button>
+				<button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-th-large" aria-hidden="true" onclick="setArticlesInRow(2)"></span></button>
+				<button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-floppy-remove" aria-hidden="true" onclick="clearArticlesStorage()" title="delete articles"></span></button>
+			</div>
 			<!-- Modal -->
 				<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="addArticleLabel">
 					<div class="modal-dialog" role="document">
@@ -72,7 +74,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" onclick="clearModalFields()" data-dismiss="modal">Закрыть</button>
-								<button type="button" class="btn btn-primary" onclick="editMode ? updateArticle() : renderArticles()" data-dismiss="modal">Сохранить</button>
+								<button type="button" class="btn btn-primary" onclick="editMode ? updateArticle() : createArticle()" data-dismiss="modal">Сохранить</button>
 							</div>
 						</div>
 					</div>
@@ -94,9 +96,9 @@
 				<span>Создано:</span>
 				<time datetime="2016-04-10"><%= creationDate %></time>
 				<div class="article-controls">
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="editArticle(<%= id %>)"
+						  data-toggle="modal" data-target="#modal"></span>
 					<span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteArticle(<%= id %>)"></span>
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="updateArticle(<%= id %>)"
-				  data-toggle="modal" data-target="#modal"></span>
 				</div>
 			</header>
 			<main>
@@ -106,7 +108,7 @@
 			<footer>
 				<table class="article-footer">
 					<tr>
-						<td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Автор:</td>
+						<td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Автор:</td>
 						<td rowspan="2">
 							<button class="btn btn-default" type="button">View details >></button>
 						</td>
@@ -120,11 +122,15 @@
 	</script>
 
 	<!-- Common LIBS -->
+	<script type="text/javascript" src="libs/localStorageService.js"></script>
 	<script type="text/javascript" src="js/templateService.js"></script>
-	<script type="text/javascript" src="js/normalizeLocalStorageService.js"></script>
+	<script type="text/javascript" src="js/loggedUserInterface.js"></script>
+	<script type="text/javascript" src="js/logOut.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<!-- END Common LIBS -->
+
+	<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>
